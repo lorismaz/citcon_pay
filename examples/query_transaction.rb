@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require "bundler/setup"
-require_relative "../lib/citcon_pay"
+require 'bundler/setup'
+require_relative '../lib/citcon_pay'
 
 # Configure CitconPay
 CitconPay.configure do |config|
-  config.api_key = ENV.fetch("CITCON_API_KEY", "sk-uat-d5ecc6d9bdd0c729fe8481438590221c")
+  config.api_key = ENV.fetch('CITCON_API_KEY', 'sk-uat-d5ecc6d9bdd0c729fe8481438590221c')
   config.environment = :sandbox
 end
 
@@ -14,7 +14,7 @@ end
 client = CitconPay::Client.new
 
 # Get transaction ID from command line or use a default
-transaction_id = ARGV[0] || "2000119337339913846789"
+transaction_id = ARGV[0] || '2000119337339913846789'
 
 puts "Querying transaction: #{transaction_id}"
 
@@ -38,7 +38,6 @@ begin
 
   puts "\nFull Response:"
   puts JSON.pretty_generate(transaction)
-
 rescue CitconPay::NotFoundError => e
   puts "\nTransaction not found: #{e.message}"
 rescue CitconPay::APIError => e

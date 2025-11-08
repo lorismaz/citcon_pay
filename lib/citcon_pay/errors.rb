@@ -5,8 +5,6 @@ module CitconPay
 
   class ConfigurationError < Error; end
 
-  class AuthenticationError < Error; end
-
   class APIError < Error
     attr_reader :response, :status_code, :error_code
 
@@ -17,6 +15,8 @@ module CitconPay
       @error_code = error_code
     end
   end
+
+  class AuthenticationError < APIError; end
 
   class ValidationError < APIError; end
 

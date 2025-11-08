@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "base"
+require_relative 'base'
 
 module CitconPay
   module Resources
@@ -109,7 +109,7 @@ module CitconPay
       #       cancel: "https://example.com/cancel"
       #     }
       #   )
-      def create(transaction:, payment:, consumer: nil, goods: nil, urls:)
+      def create(transaction:, payment:, urls:, consumer: nil, goods: nil)
         body = {
           transaction: transaction,
           payment: payment,
@@ -119,14 +119,14 @@ module CitconPay
         body[:consumer] = consumer if consumer
         body[:goods] = goods if goods
 
-        post("charges", body: body)
+        post('charges', body: body)
       end
 
       # List charges (if supported by API)
       # @param params [Hash] Query parameters
       # @return [Hash] List of charges
       def list(params = {})
-        get("charges", params: params)
+        get('charges', params: params)
       end
 
       # Retrieve a specific charge

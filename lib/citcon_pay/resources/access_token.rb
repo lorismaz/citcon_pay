@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "base"
+require_relative 'base'
 
 module CitconPay
   module Resources
@@ -8,12 +8,12 @@ module CitconPay
       # Create a new access token
       # @param token_type [String] The type of token (default: 'server')
       # @return [Hash] Response containing the access token
-      def create(token_type: "server")
+      def create(token_type: 'server')
         client.authenticate!
         {
-          "data" => {
-            "access_token" => client.access_token,
-            "token_type" => token_type
+          'data' => {
+            'access_token' => client.access_token,
+            'token_type' => token_type
           }
         }
       end

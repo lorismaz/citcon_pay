@@ -50,16 +50,16 @@ module CitconPay
 
     # Authenticate and get access token
     def authenticate!
-      response = connection(use_access_token: false).post("access-tokens") do |req|
-        req.headers["Authorization"] = "Bearer #{configuration.api_key}"
-        req.headers["Content-Type"] = "application/json"
-        req.body = { token_type: "server" }.to_json
+      response = connection(use_access_token: false).post('access-tokens') do |req|
+        req.headers['Authorization'] = "Bearer #{configuration.api_key}"
+        req.headers['Content-Type'] = 'application/json'
+        req.body = { token_type: 'server' }.to_json
       end
 
       data = parse_response(response)
-      @access_token = data.dig("data", "access_token")
+      @access_token = data.dig('data', 'access_token')
 
-      raise AuthenticationError, "Failed to obtain access token" if @access_token.nil?
+      raise AuthenticationError, 'Failed to obtain access token' if @access_token.nil?
 
       @access_token
     end
@@ -95,8 +95,8 @@ module CitconPay
         conn.response :json, content_type: /\bjson$/
         conn.response :logger, nil, { headers: true, bodies: true } if configuration.log_level == :debug
 
-        conn.headers["Content-Type"] = "application/json"
-        conn.headers["Authorization"] = "Bearer #{access_token}" if use_access_token && authenticated?
+        conn.headers['Content-Type'] = 'application/json'
+        conn.headers['Authorization'] = "Bearer #{access_token}" if use_access_token && authenticated?
 
         conn.options.timeout = configuration.timeout
         conn.options.open_timeout = configuration.open_timeout
@@ -110,25 +110,27 @@ module CitconPay
       when 200..299
         response.body
       when 400
-        handle_error(response, ValidationError, "Validation error")
+        handle_error(response, ValidationError, 'Validation error')
       when 401
         @access_token = nil # Clear invalid token
-        handle_error(response, AuthenticationError, "Authentication failed")
+        handle_error(response, AuthenticationError, 'Authentication failed')
       when 404
-        handle_error(response, NotFoundError, "Resource not found")
+        handle_error(response, NotFoundError, 'Resource not found')
       when 429
-        handle_error(response, RateLimitError, "Rate limit exceeded")
+        handle_error(response, RateLimitError, 'Rate limit exceeded')
       when 500..599
-        handle_error(response, ServerError, "Server error")
+        handle_error(response, ServerError, 'Server error')
       else
-        handle_error(response, APIError, "API error")
+        handle_error(response, APIError, 'API error')
       end
     end
 
     def handle_error(response, error_class, default_message)
       body = response.body || {}
-      message = body.dig("message") || body.dig("error", "message") || default_message
-      error_code = body.dig("code") || body.dig("error", "code")
+      body = {} unless body.is_a?(Hash)
+
+      message = body.dig('message') || body.dig('error', 'message') || default_message
+      error_code = body.dig('code') || body.dig('error', 'code')
 
       raise error_class.new(
         message,

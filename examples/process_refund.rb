@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require "bundler/setup"
-require_relative "../lib/citcon_pay"
+require 'bundler/setup'
+require_relative '../lib/citcon_pay'
 
 # Configure CitconPay
 CitconPay.configure do |config|
-  config.api_key = ENV.fetch("CITCON_API_KEY", "sk-uat-d5ecc6d9bdd0c729fe8481438590221c")
+  config.api_key = ENV.fetch('CITCON_API_KEY', 'sk-uat-d5ecc6d9bdd0c729fe8481438590221c')
   config.environment = :sandbox
 end
 
@@ -14,10 +14,10 @@ end
 client = CitconPay::Client.new
 
 # Transaction details (replace with actual values)
-transaction_id = ARGV[0] || "2000161754397568069637"
-amount = (ARGV[1] || "50.00").to_f
+transaction_id = ARGV[0] || '2000161754397568069637'
+amount = (ARGV[1] || '50.00').to_f
 
-puts "Processing refund..."
+puts 'Processing refund...'
 puts "Transaction ID: #{transaction_id}"
 puts "Refund Amount: #{amount}"
 
@@ -26,9 +26,9 @@ begin
   response = client.refunds.create(
     id: transaction_id,
     reference: "REFUND-#{Time.now.to_i}",
-    transaction_reference: "ORDER-12345", # Optional
+    transaction_reference: 'ORDER-12345', # Optional
     amount: amount,
-    note: "Customer requested refund"
+    note: 'Customer requested refund'
   )
 
   puts "\nRefund created successfully!"
@@ -38,10 +38,9 @@ begin
 
   puts "\nFull Response:"
   puts JSON.pretty_generate(response)
-
 rescue CitconPay::ValidationError => e
   puts "\nValidation error: #{e.message}"
-  puts "Make sure the transaction ID is correct and the transaction can be refunded"
+  puts 'Make sure the transaction ID is correct and the transaction can be refunded'
 rescue CitconPay::APIError => e
   puts "\nError processing refund:"
   puts "Error: #{e.message}"

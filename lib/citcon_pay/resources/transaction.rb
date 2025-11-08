@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "base"
+require_relative 'base'
 
 module CitconPay
   module Resources
@@ -33,7 +33,7 @@ module CitconPay
       # @param params [Hash] Query parameters (e.g., start_date, end_date, status)
       # @return [Hash] List of transactions
       def list(params = {})
-        get("transactions", params: params)
+        get('transactions', params: params)
       end
 
       # Check transaction status
@@ -41,21 +41,21 @@ module CitconPay
       # @return [String] Transaction status
       def status(id)
         transaction = retrieve(id)
-        transaction.dig("data", "status")
+        transaction.dig('data', 'status')
       end
 
       # Check if transaction is successful
       # @param id [String] Transaction ID
       # @return [Boolean] True if transaction is successful
       def successful?(id)
-        status(id) == "success"
+        status(id) == 'success'
       end
 
       # Check if transaction is pending
       # @param id [String] Transaction ID
       # @return [Boolean] True if transaction is pending
       def pending?(id)
-        status(id) == "pending"
+        status(id) == 'pending'
       end
 
       # Check if transaction failed

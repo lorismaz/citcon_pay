@@ -1,0 +1,149 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.sandbox.citconpay.com/v1/access-tokens
+    body:
+      encoding: UTF-8
+      string: '{"token_type":"server"}'
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Faraday v2.14.0
+      Authorization:
+      - Bearer <ACCESS_TOKEN>
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sat, 08 Nov 2025 10:29:41 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Cf-Ray:
+      - 99b46407ce1ad124-CDG
+      Cf-Cache-Status:
+      - DYNAMIC
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Etag:
+      - W/"1e5-nPa9qP8ICxZu88Ujs30sbL/cAGg"
+      Expires:
+      - '0'
+      Server:
+      - cloudflare
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains; preload
+      Vary:
+      - Origin, accept-encoding
+      Pragma:
+      - no-cache
+      Content-Security-Policy:
+      - default-src 'none';
+      Content-Security-Policy-Report-Only:
+      - default-src amplitude.com *.amplitude.com cash.app *.cash.app cloudflare.com
+        *.cloudflare.com cloudflareinsights.com *.cloudflareinsights.com datatables.net
+        *.datatables.net doubleclick.net *.doubleclick.net google-analytics.com *.google-analytics.com
+        google.com *.google.com googletagmanager.com *.googletagmanager.com jquery.com
+        *.jquery.com paypal.com *.paypal.com sentry.io *.sentry.io tiny.cloud *.tiny.cloud
+        tinymce.com *.tinymce.com citconpay.com *.citconpay.com facebook.net *.facebook.net
+        google.co.uk *.google.co.uk kcp.co.kr *.kcp.co.kr ngrok-free.app *.ngrok-free.app
+        sift.com *.sift.com 'unsafe-inline' 'unsafe-eval' 'self'; report-uri https://csp-reporting.cloudflare.com/cdn-cgi/script_monitor/report?m=fQC8uLEAH8DFIiuAWmsGsqcJlfRA2GBoGMmc7ER0W1U-1762597781.7272074-1.0.1.1-.euAYrb0IOlp1sMOhKBntgjil1mGVWmqptrDaSnpKAyboKfyXRtglAyPdAY4tu4CDFuLuyEMg5bFlU_ZQQLElYDegoM98HI8OS._zTdc353zNJ6Ur7M0HumgtN9yQRf.X4dJBos9IM8b.SCwra9eoD9y_Y4obwZ6o00_gwrq4.r9uy77jWE8j3RkBENzfovmuxhvZTF768_8nZenL2JjbA;
+        report-to cf-yfwffyiznynqeqkt
+      Report-To:
+      - '{"group":"cf-yfwffyiznynqeqkt","max_age":86400,"endpoints":[{"url":"https://csp-reporting.cloudflare.com/cdn-cgi/script_monitor/report?m=fQC8uLEAH8DFIiuAWmsGsqcJlfRA2GBoGMmc7ER0W1U-1762597781.7272074-1.0.1.1-.euAYrb0IOlp1sMOhKBntgjil1mGVWmqptrDaSnpKAyboKfyXRtglAyPdAY4tu4CDFuLuyEMg5bFlU_ZQQLElYDegoM98HI8OS._zTdc353zNJ6Ur7M0HumgtN9yQRf.X4dJBos9IM8b.SCwra9eoD9y_Y4obwZ6o00_gwrq4.r9uy77jWE8j3RkBENzfovmuxhvZTF768_8nZenL2JjbA"}]}'
+      Set-Cookie:
+      - __cf_bm=F9E_JSVHLgAE3K3qwEkGs0zLpkHfVJmob.1VCVhTzSI-1762597781.7272074-1.0.1.1-2pC51twJ7qFc2xdOJNSuoh2kPlgyFhwwWQhHkU_2uLRknilnv7eShKMv.9RTQQ4J_8YxP1FT_4X8cBu72VZ6H3KRiAj9YAUN3HwZBIYai3BnK1mMJOcpq__AVYLyO2rS;
+        HttpOnly; Secure; Path=/; Domain=citconpay.com; Expires=Sat, 08 Nov 2025 10:59:41
+        GMT
+      - _cfuvid=eCdwes.tyubUWwvGtfIqaxa_feROo.2H1cPahATZnUI-1762597781.7272074-1.0.1.1-gdIo.zgABfyk45EODj1GW.MBg6E_fG24IswwIYPXZ24;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.sandbox.citconpay.com
+    body:
+      encoding: ASCII-8BIT
+      string: '{"status":"success","app":"citcon_upi","version":"v1.0.0","data":{"access_token":"<ACCESS_TOKEN>","token_type":"server","expiry":1762681312,"permission":["inquiry","charge","vault","consult","encryption-config","refund","capture"]}}'
+  recorded_at: Sat, 08 Nov 2025 10:29:41 GMT
+- request:
+    method: post
+    uri: https://api.sandbox.citconpay.com/v1/charges
+    body:
+      encoding: UTF-8
+      string: '{"transaction":{"reference":"TEST-VCR-TXN-002","amount":150,"currency":"USD","country":"US","note":"Reference
+        retrieval test"},"payment":{"method":"alipay","client":["mobile_browser"]},"urls":{"ipn":"https://example.com/webhooks/citcon","success":"https://example.com/payment/success","fail":"https://example.com/payment/fail"}}'
+    headers:
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <ACCESS_TOKEN>
+      User-Agent:
+      - Faraday v2.14.0
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 400
+      message: Bad Request
+    headers:
+      Date:
+      - Sat, 08 Nov 2025 10:29:42 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '108'
+      Connection:
+      - keep-alive
+      Cf-Ray:
+      - 99b4640a090b8ded-CDG
+      Cf-Cache-Status:
+      - DYNAMIC
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Etag:
+      - W/"6c-kZd0TmHTpiZzzK0nm17i6qjKuc4"
+      Expires:
+      - '0'
+      Server:
+      - cloudflare
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains; preload
+      Vary:
+      - Origin, accept-encoding
+      Pragma:
+      - no-cache
+      Content-Security-Policy:
+      - default-src 'none';
+      Content-Security-Policy-Report-Only:
+      - default-src amplitude.com *.amplitude.com cash.app *.cash.app cloudflare.com
+        *.cloudflare.com cloudflareinsights.com *.cloudflareinsights.com datatables.net
+        *.datatables.net doubleclick.net *.doubleclick.net google-analytics.com *.google-analytics.com
+        google.com *.google.com googletagmanager.com *.googletagmanager.com jquery.com
+        *.jquery.com paypal.com *.paypal.com sentry.io *.sentry.io tiny.cloud *.tiny.cloud
+        tinymce.com *.tinymce.com citconpay.com *.citconpay.com facebook.net *.facebook.net
+        google.co.uk *.google.co.uk kcp.co.kr *.kcp.co.kr ngrok-free.app *.ngrok-free.app
+        sift.com *.sift.com 'unsafe-inline' 'unsafe-eval' 'self'; report-uri https://csp-reporting.cloudflare.com/cdn-cgi/script_monitor/report?m=3dy9PNHCvVb17XjbsFP4ng3UH0XIV4ybnRXzml9YnpU-1762597782.0831115-1.0.1.1-r7VKm3Jj2A2YYXkl4oSxp0hWcSsEaGlNtXTEGG.9mMLtm_eWNjd.db77_VD1AFbRIdb_nfUuIqTKVXRdDlukdF6BHknGoNOCIgxd0sAkAR6J4qXuK7Swqeh2oAHBG4zvJ_BYxp9.fsT3i6eUqXC0R1vNTfVYK_i7IppW4h2qHSlxnT80Ch2UKIg0zPs_Wip.lDyqBfibrB5VEpCjR2bX8A;
+        report-to cf-nasyrlqlscayyred
+      Report-To:
+      - '{"group":"cf-nasyrlqlscayyred","max_age":86400,"endpoints":[{"url":"https://csp-reporting.cloudflare.com/cdn-cgi/script_monitor/report?m=3dy9PNHCvVb17XjbsFP4ng3UH0XIV4ybnRXzml9YnpU-1762597782.0831115-1.0.1.1-r7VKm3Jj2A2YYXkl4oSxp0hWcSsEaGlNtXTEGG.9mMLtm_eWNjd.db77_VD1AFbRIdb_nfUuIqTKVXRdDlukdF6BHknGoNOCIgxd0sAkAR6J4qXuK7Swqeh2oAHBG4zvJ_BYxp9.fsT3i6eUqXC0R1vNTfVYK_i7IppW4h2qHSlxnT80Ch2UKIg0zPs_Wip.lDyqBfibrB5VEpCjR2bX8A"}]}'
+      Set-Cookie:
+      - __cf_bm=cqnMVKLjsk8cpDCf18KS0pv04eh8hxVV2fhLBL0V0Y8-1762597782.0831115-1.0.1.1-LF.KeghbStDJWiTKK21ccZFtLtgPWjn1Lm8yEmCcXXVj0QpbpvecH5QYEIuakUpEZ6QSNGAnVjsoXREk9t44xi50GqTyiuWM2YMnFXqYTVqmwB_1hOn2r_UkpXJIKwjl;
+        HttpOnly; Secure; Path=/; Domain=citconpay.com; Expires=Sat, 08 Nov 2025 10:59:42
+        GMT
+      - _cfuvid=eOgRvQIhJWdoI6pH4M8Vu5V.mTUmclTHeF8LnsRlAHY-1762597782.0831115-1.0.1.1-RkungzjBRwOayWO2dqlM8A3vnz9KEgZOIZVjRA_SgPY;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.sandbox.citconpay.com
+    body:
+      encoding: UTF-8
+      string: '{"status":"fail","app":"citcon_upi","version":"v1.0.0","data":{"code":"4100","message":"duplicate
+        request"}}'
+  recorded_at: Sat, 08 Nov 2025 10:29:42 GMT
+recorded_with: VCR 6.3.1

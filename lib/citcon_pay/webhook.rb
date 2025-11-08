@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "openssl"
-require "json"
+require 'openssl'
+require 'json'
 
 module CitconPay
   module Webhook
@@ -15,7 +15,7 @@ module CitconPay
       # @return [Boolean] True if signature is valid
       def verify_signature(payload, signature, secret)
         expected_signature = OpenSSL::HMAC.hexdigest(
-          OpenSSL::Digest.new("sha256"),
+          OpenSSL::Digest.new('sha256'),
           secret,
           payload
         )
@@ -40,7 +40,7 @@ module CitconPay
       #
       # @return [Hash] Transaction data
       def extract_transaction(payload)
-        payload.dig("data", "transaction") || payload["transaction"] || {}
+        payload.dig('data', 'transaction') || payload['transaction'] || {}
       end
 
       # Get transaction status from webhook
@@ -50,7 +50,7 @@ module CitconPay
       # @return [String] Transaction status
       def transaction_status(payload)
         transaction = extract_transaction(payload)
-        transaction["status"]
+        transaction['status']
       end
 
       # Check if webhook indicates successful payment
@@ -59,7 +59,7 @@ module CitconPay
       #
       # @return [Boolean] True if payment was successful
       def successful_payment?(payload)
-        transaction_status(payload) == "success"
+        transaction_status(payload) == 'success'
       end
 
       private
@@ -68,7 +68,7 @@ module CitconPay
       def secure_compare(a, b)
         return false if a.nil? || b.nil? || a.bytesize != b.bytesize
 
-        l = a.unpack("C*")
+        l = a.unpack('C*')
         r = 0
         i = -1
 

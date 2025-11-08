@@ -56,14 +56,13 @@ module Webhooks
 
         # Return 200 OK to acknowledge receipt
         head :ok
-
       rescue ActiveRecord::RecordNotFound => e
         Rails.logger.error "Order not found for webhook: #{e.message}"
         head :not_found
       rescue JSON::ParserError => e
         Rails.logger.error "Invalid webhook JSON: #{e.message}"
         head :bad_request
-      rescue => e
+      rescue StandardError => e
         Rails.logger.error "Webhook processing error: #{e.message}"
         Rails.logger.error e.backtrace.join("\n")
         head :unprocessable_entity
@@ -104,7 +103,7 @@ module Webhooks
       Rails.logger.info "Payment successful for order #{order.reference}"
     end
 
-    def handle_pending_payment(order, transaction_id, webhook_data)
+    def handle_pending_payment(order, transaction_id, _webhook_data)
       order.update(
         status: 'payment_pending',
         citcon_transaction_id: transaction_id,
@@ -155,7 +154,6 @@ module Webhooks
           "Status mismatch: webhook=#{webhook_status}, api=#{api_status}"
         )
       end
-
     rescue CitconPay::APIError => e
       Rails.logger.error "Failed to verify transaction with API: #{e.message}"
       # Don't fail the webhook processing if API verification fails

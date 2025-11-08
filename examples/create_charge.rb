@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require "bundler/setup"
-require_relative "../lib/citcon_pay"
+require 'bundler/setup'
+require_relative '../lib/citcon_pay'
 
 # Configure CitconPay
 CitconPay.configure do |config|
-  config.api_key = ENV.fetch("CITCON_API_KEY", "sk-uat-d5ecc6d9bdd0c729fe8481438590221c")
+  config.api_key = ENV.fetch('CITCON_API_KEY', 'sk-uat-d5ecc6d9bdd0c729fe8481438590221c')
   config.environment = :sandbox
   config.log_level = :debug
 end
@@ -14,7 +14,7 @@ end
 # Create a client
 client = CitconPay::Client.new
 
-puts "Creating a charge for Alipay payment..."
+puts 'Creating a charge for Alipay payment...'
 
 begin
   # Create a charge
@@ -22,27 +22,27 @@ begin
     transaction: {
       reference: "EXAMPLE-#{Time.now.to_i}",
       amount: 100.00,
-      currency: "USD",
-      country: "US",
-      country_accelerator: "CN", # Important for Chinese payment methods
-      note: "Test payment from Ruby client"
+      currency: 'USD',
+      country: 'US',
+      country_accelerator: 'CN', # Important for Chinese payment methods
+      note: 'Test payment from Ruby client'
     },
     payment: {
-      method: "alipay",
-      client: ["mobile_browser", "desktop"]
+      method: 'alipay',
+      client: %w[mobile_browser desktop]
     },
     consumer: {
-      reference: "CUSTOMER-123",
-      first_name: "John",
-      last_name: "Doe",
-      phone: "13312345678",
-      email: "john.doe@example.com"
+      reference: 'CUSTOMER-123',
+      first_name: 'John',
+      last_name: 'Doe',
+      phone: '13312345678',
+      email: 'john.doe@example.com'
     },
     urls: {
-      ipn: "https://example.com/webhooks/citcon",
-      success: "https://example.com/payment/success",
-      fail: "https://example.com/payment/fail",
-      cancel: "https://example.com/payment/cancel"
+      ipn: 'https://example.com/webhooks/citcon',
+      success: 'https://example.com/payment/success',
+      fail: 'https://example.com/payment/fail',
+      cancel: 'https://example.com/payment/cancel'
     }
   )
 
@@ -53,7 +53,6 @@ begin
   puts "Reference: #{response.dig('data', 'reference')}"
   puts "\nFull response:"
   puts JSON.pretty_generate(response)
-
 rescue CitconPay::APIError => e
   puts "\nError creating charge:"
   puts "Error: #{e.message}"

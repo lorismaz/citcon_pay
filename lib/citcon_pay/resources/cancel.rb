@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "base"
+require_relative 'base'
 
 module CitconPay
   module Resources
@@ -27,7 +27,7 @@ module CitconPay
 
         body[:transaction_reference] = transaction_reference if transaction_reference
 
-        post("cancels", body: body)
+        post('cancels', body: body)
       end
 
       # Retrieve a specific cancellation
