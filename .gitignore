@@ -1,0 +1,30 @@
+# RSpec
+coverage/
+.rspec_status
+
+# Gem packaging
+*.gem
+pkg/
+Gemfile.lock
+
+# Bundler
+.bundle/
+vendor/bundle
+
+# Build artifacts
+tmp/
+log/
+
+# macOS
+.DS_Store
+
+# Editor/IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Documentation
+doc/
+.yardoc/
