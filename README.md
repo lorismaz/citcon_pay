@@ -414,20 +414,85 @@ rescue CitconPay::APIError => e
 end
 ```
 
-## Supported Payment Methods
+## Payment Methods
 
-- **Alipay** - `method: 'alipay'`
-- **WeChat Pay** - `method: 'wechatpay'`
-- **UnionPay** - `method: 'upop'`
-- **PayPal** - `method: 'paypal'`
-- **Venmo** - `method: 'venmo'`
-- **Credit/Debit Card** - `method: 'card'`
-- **CashApp** - `method: 'cashapp'`
-- **Afterpay** - `method: 'afterpay'`
-- **Klarna** - `method: 'klarna'`
-- **KCP** (Korea) - `method: 'kcp'`
-- **OXXO** (Mexico) - `method: 'oxxo'`
-- **Mercado Pago** (Latin America) - `method: 'mercadopago'`
+The gem provides a `PaymentMethods` module for validating and querying supported payment methods:
+
+```ruby
+# Check if a payment method is valid
+CitconPay::PaymentMethods.valid?('paypal')  # => true
+CitconPay::PaymentMethods.valid?('invalid') # => false
+
+# Get all payment method codes
+CitconPay::PaymentMethods.all_codes
+# => ['card', 'banktransfer', 'paypal', 'venmo', ...]
+
+# Check endpoint support
+CitconPay::PaymentMethods.supports_vault?('paypal')     # => true
+CitconPay::PaymentMethods.supports_consult?('alipay')   # => true
+CitconPay::PaymentMethods.supports_charge?('card')      # => true
+
+# Get payment method details
+CitconPay::PaymentMethods.find('card')
+# => { name: 'Credit Card / Debit Card', endpoints: [:charge, :consult, :vault] }
+```
+
+### Supported Payment Methods (47 total)
+
+| Payment Method | Code | Charge | Consult | Vault |
+|----------------|------|:------:|:-------:|:-----:|
+| Credit Card / Debit Card | `card` | ✓ | ✓ | ✓ |
+| Bank Transfer | `banktransfer` | ✓ | ✓ | |
+| PayPal | `paypal` | ✓ | | ✓ |
+| Venmo | `venmo` | ✓ | | |
+| Klarna | `klarna` | ✓ | | |
+| OXXO | `oxxo` | ✓ | | |
+| OXXO Pay | `oxxopay` | ✓ | | |
+| SPEI | `spei` | ✓ | | |
+| Mercado Pago | `mercadopago` | ✓ | | |
+| WeChat Pay | `wechatpay` | ✓ | | |
+| Alipay | `alipay` | ✓ | ✓ | |
+| China UnionPay | `upop` | ✓ | | |
+| PayCo | `payco` | ✓ | | |
+| Naver Pay | `naverpay` | ✓ | | |
+| Kakao Pay | `kakaopay` | ✓ | ✓ | |
+| LINE Pay | `linepay` | ✓ | | |
+| PayPay | `paypay` | ✓ | | |
+| Rakuten Pay | `rakutenpay` | ✓ | | |
+| Alipay+ | `alipay+` | ✓ | ✓ | |
+| PayNow | `paynow` | ✓ | | |
+| NETS | `netspay` | ✓ | | |
+| GrabPay | `grabpay` | ✓ | | |
+| ShopeePay | `shopeepay` | ✓ | | |
+| Atome | `atome` | ✓ | | |
+| Alipay Hong Kong | `alipay_hk` | ✓ | | |
+| DANA | `dana` | ✓ | | |
+| GCash | `gcash` | ✓ | | |
+| Rabbit LINE Pay | `rabbit_line_pay` | ✓ | | |
+| TNG | `tng` | ✓ | | |
+| TrueMoney | `truemoney` | ✓ | | |
+| BPI | `bpi` | ✓ | | |
+| Boost | `boost` | ✓ | | |
+| Toss | `toss` | ✓ | | |
+| L. Pay | `lpay` | ✓ | ✓ | |
+| LG Pay | `lgpay` | ✓ | ✓ | |
+| Samsung Pay | `samsungpay` | ✓ | ✓ | |
+| UBP | `ubp` | ✓ | ✓ | |
+| PayMaya | `paymaya` | ✓ | ✓ | |
+| Cash App | `cashapppay` | ✓ | | ✓ |
+| Afterpay | `afterpay` | ✓ | | |
+| Ozow | `ozow` | ✓ | | |
+| M-PESA | `m_pesa` | ✓ | | |
+| Unified Payments Interface India | `upi` | ✓ | | |
+| Citcon UPI Hosted Payment Page | `hpp` | ✓ | | |
+| Paze | `paze` | ✓ | | |
+| Pix | `pix` | ✓ | | |
+| Affirm | `affirm` | ✓ | | |
+
+**Endpoints:**
+- **Charge**: Create a new payment transaction
+- **Consult**: Query transaction status and details
+- **Vault**: Tokenize payment method for future use
 
 ## Testing
 
