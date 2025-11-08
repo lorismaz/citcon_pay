@@ -1,7 +1,14 @@
 # frozen_string_literal: true
 
-RSpec.describe CitconPay::Client, :configure_citcon, :stub do
+RSpec.describe CitconPay::Client, :stub do
   let(:client) { described_class.new }
+
+  before do
+    CitconPay.configure do |c|
+      c.api_key = 'test-api-key'
+      c.environment = :sandbox
+    end
+  end
 
   describe '#initialize' do
     it 'uses global configuration by default' do
