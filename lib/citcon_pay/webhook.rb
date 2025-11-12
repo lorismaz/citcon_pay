@@ -36,11 +36,16 @@ module CitconPay
 
       # Extract transaction data from webhook
       #
+      # CitconPay webhooks send transaction data directly in the root payload,
+      # not nested under 'data' or 'transaction' keys.
+      #
       # @param payload [Hash] Parsed webhook payload
       #
       # @return [Hash] Transaction data
       def extract_transaction(payload)
-        payload.dig('data', 'transaction') || payload['transaction'] || {}
+        # CitconPay sends data directly in root (not nested)
+        # For backwards compatibility, check nested structure first
+        payload.dig('data', 'transaction') || payload['transaction'] || payload
       end
 
       # Get transaction status from webhook
@@ -49,8 +54,8 @@ module CitconPay
       #
       # @return [String] Transaction status
       def transaction_status(payload)
-        transaction = extract_transaction(payload)
-        transaction['status']
+        # CitconPay sends status directly in root payload
+        payload['status'] || extract_transaction(payload)['status']
       end
 
       # Check if webhook indicates successful payment
