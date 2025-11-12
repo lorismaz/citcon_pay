@@ -210,4 +210,372 @@ RSpec.describe 'Payment Methods', :configure_citcon, :vcr do
       expect(response['data']['status']).to eq('initiated')
     end
   end
+
+  # Service product type tests - verifying that service products don't require shipping addresses
+  describe 'Alipay charge with service product type (no shipping)',
+           vcr: { cassette_name: 'charge/alipay_service_no_shipping' } do
+    it 'creates an Alipay charge with service product type without shipping address' do
+      response = client.charges.create(
+        transaction: {
+          reference: 'ALIPAY-SERVICE-1762634608',
+          amount: 150.00,
+          currency: 'USD',
+          country: 'US',
+          country_accelerator: 'CN',
+          note: 'Test payment for consulting service'
+        },
+        payment: {
+          method: 'alipay',
+          client: %w[mobile_browser desktop]
+        },
+        consumer: {
+          reference: 'CUSTOMER-SERVICE-001',
+          first_name: 'Jane',
+          last_name: 'Smith',
+          phone: '13312345678',
+          email: 'jane.smith@example.com'
+        },
+        urls: {
+          ipn: 'https://example.com/webhooks/citcon',
+          success: 'https://example.com/payment/success',
+          fail: 'https://example.com/payment/fail',
+          cancel: 'https://example.com/payment/cancel'
+        },
+        goods: {
+          data: [
+            {
+              product_name: 'Business Consulting Service',
+              product_sku: 'SERVICE-CONSULT-001',
+              product_type: 'service', # Service type - no shipping required
+              quantity: 1,
+              unit_amount: 150.00,
+              description: 'Professional business consulting - 3 hours'
+            }
+          ]
+          # Note: No shipping parameter included - this is the key test
+        }
+      )
+
+      # Verify successful charge creation
+      expect(response).to have_key('data')
+      expect(response['data']).to have_key('id')
+      expect(response['data']).to have_key('charge_token')
+      expect(response['data']['payment']['method']).to eq('alipay')
+      expect(response['data']['status']).to eq('initiated')
+      expect(response['data']['amount']).to eq(150)
+      expect(response['data']['currency']).to eq('USD')
+
+      # Verify payment URLs are provided
+      expect(response['data']['payment']).to have_key('client')
+      expect(response['data']['payment']['client']).to be_an(Array)
+      expect(response['data']['payment']['client']).not_to be_empty
+    end
+  end
+
+  describe 'WeChat Pay charge with service product type (no shipping)',
+           vcr: { cassette_name: 'charge/wechat_service_no_shipping' } do
+    it 'creates a WeChat Pay charge with service product type without shipping address' do
+      response = client.charges.create(
+        transaction: {
+          reference: 'WECHAT-SERVICE-1762634628',
+          amount: 99.00,
+          currency: 'USD',
+          country: 'US',
+          country_accelerator: 'CN',
+          note: 'Test payment for premium subscription'
+        },
+        payment: {
+          method: 'wechatpay',
+          client: %w[mobile_browser desktop]
+        },
+        consumer: {
+          reference: 'CUSTOMER-SERVICE-002',
+          first_name: 'Michael',
+          last_name: 'Chen',
+          phone: '13312345678',
+          email: 'michael.chen@example.com'
+        },
+        urls: {
+          ipn: 'https://example.com/webhooks/citcon',
+          success: 'https://example.com/payment/success',
+          fail: 'https://example.com/payment/fail',
+          cancel: 'https://example.com/payment/cancel'
+        },
+        goods: {
+          data: [
+            {
+              product_name: 'Premium Subscription - Annual',
+              product_sku: 'SERVICE-SUB-PREMIUM-ANNUAL',
+              product_type: 'service', # Service type - no shipping required
+              quantity: 1,
+              unit_amount: 99.00,
+              description: 'Premium membership for 12 months with all features unlocked'
+            }
+          ]
+          # Note: No shipping parameter included - this is the key test
+        }
+      )
+
+      # Verify successful charge creation
+      expect(response).to have_key('data')
+      expect(response['data']).to have_key('id')
+      expect(response['data']).to have_key('charge_token')
+      expect(response['data']['payment']['method']).to eq('wechatpay')
+      expect(response['data']['status']).to eq('initiated')
+      expect(response['data']['amount']).to eq(99)
+      expect(response['data']['currency']).to eq('USD')
+
+      # Verify payment URLs are provided
+      expect(response['data']['payment']).to have_key('client')
+      expect(response['data']['payment']['client']).to be_an(Array)
+      expect(response['data']['payment']['client']).not_to be_empty
+    end
+  end
+
+  # Comprehensive service address combination tests
+  describe 'Service product address flexibility tests' do
+    describe 'no billing, no shipping',
+             vcr: { cassette_name: 'service_address_tests/no_billing_no_shipping' } do
+      it 'creates a charge with service type and NO addresses at all' do
+        response = client.charges.create(
+          transaction: {
+            reference: 'SERVICE-NO-ADDR-1762636004',
+            amount: 100.00,
+            currency: 'USD',
+            country: 'US',
+            country_accelerator: 'CN',
+            note: 'Service with no addresses'
+          },
+          payment: {
+            method: 'alipay',
+            client: %w[mobile_browser desktop]
+          },
+          consumer: {
+            reference: 'CUSTOMER-001',
+            first_name: 'Test',
+            last_name: 'User',
+            phone: '13312345678',
+            email: 'test@example.com'
+          },
+          urls: {
+            ipn: 'https://example.com/webhooks/citcon',
+            success: 'https://example.com/payment/success',
+            fail: 'https://example.com/payment/fail',
+            cancel: 'https://example.com/payment/cancel'
+          },
+          goods: {
+            data: [
+              {
+                product_name: 'SaaS Subscription',
+                product_sku: 'SERVICE-001',
+                product_type: 'service',
+                quantity: 1,
+                unit_amount: 100.00,
+                description: 'Monthly subscription service'
+              }
+            ]
+            # No billing, no shipping
+          }
+        )
+
+        expect(response['data']).to have_key('id')
+        expect(response['data']['status']).to eq('initiated')
+        expect(response['data']['amount']).to eq(100)
+      end
+    end
+
+    describe 'billing only, no shipping',
+             vcr: { cassette_name: 'service_address_tests/billing_only_no_shipping' } do
+      it 'creates a charge with service type and billing address only' do
+        response = client.charges.create(
+          transaction: {
+            reference: 'SERVICE-BILL-ONLY-1762636005',
+            amount: 100.00,
+            currency: 'USD',
+            country: 'US',
+            country_accelerator: 'CN',
+            note: 'Service with billing address only'
+          },
+          payment: {
+            method: 'alipay',
+            client: %w[mobile_browser desktop]
+          },
+          consumer: {
+            reference: 'CUSTOMER-001',
+            first_name: 'Test',
+            last_name: 'User',
+            phone: '13312345678',
+            email: 'test@example.com'
+          },
+          urls: {
+            ipn: 'https://example.com/webhooks/citcon',
+            success: 'https://example.com/payment/success',
+            fail: 'https://example.com/payment/fail',
+            cancel: 'https://example.com/payment/cancel'
+          },
+          goods: {
+            data: [
+              {
+                product_name: 'SaaS Subscription',
+                product_sku: 'SERVICE-001',
+                product_type: 'service',
+                quantity: 1,
+                unit_amount: 100.00,
+                description: 'Monthly subscription service'
+              }
+            ],
+            billing: {
+              first_name: 'Bill',
+              last_name: 'Payer',
+              phone: '2125551234',
+              email: 'billing@company.com',
+              street: '100 Billing Street',
+              city: 'New York',
+              state: 'NY',
+              zip: '10001',
+              country: 'US'
+            }
+            # Billing only, no shipping
+          }
+        )
+
+        expect(response['data']).to have_key('id')
+        expect(response['data']['status']).to eq('initiated')
+        expect(response['data']['amount']).to eq(100)
+      end
+    end
+
+    describe 'shipping only, no billing',
+             vcr: { cassette_name: 'service_address_tests/shipping_only_no_billing' } do
+      it 'creates a charge with service type and shipping address only' do
+        response = client.charges.create(
+          transaction: {
+            reference: 'SERVICE-SHIP-ONLY-1762636005',
+            amount: 100.00,
+            currency: 'USD',
+            country: 'US',
+            country_accelerator: 'CN',
+            note: 'Service with shipping address only'
+          },
+          payment: {
+            method: 'alipay',
+            client: %w[mobile_browser desktop]
+          },
+          consumer: {
+            reference: 'CUSTOMER-001',
+            first_name: 'Test',
+            last_name: 'User',
+            phone: '13312345678',
+            email: 'test@example.com'
+          },
+          urls: {
+            ipn: 'https://example.com/webhooks/citcon',
+            success: 'https://example.com/payment/success',
+            fail: 'https://example.com/payment/fail',
+            cancel: 'https://example.com/payment/cancel'
+          },
+          goods: {
+            data: [
+              {
+                product_name: 'SaaS Subscription',
+                product_sku: 'SERVICE-001',
+                product_type: 'service',
+                quantity: 1,
+                unit_amount: 100.00,
+                description: 'Monthly subscription service'
+              }
+            ],
+            shipping: {
+              first_name: 'Ship',
+              last_name: 'Receiver',
+              phone: '6145675309',
+              email: 'shipping@company.com',
+              street: '200 Shipping Ave',
+              city: 'Columbus',
+              state: 'OH',
+              zip: '43221',
+              country: 'US'
+            }
+            # Shipping only, no billing
+          }
+        )
+
+        expect(response['data']).to have_key('id')
+        expect(response['data']['status']).to eq('initiated')
+        expect(response['data']['amount']).to eq(100)
+      end
+    end
+
+    describe 'both billing and shipping',
+             vcr: { cassette_name: 'service_address_tests/both_billing_and_shipping' } do
+      it 'creates a charge with service type and both addresses' do
+        response = client.charges.create(
+          transaction: {
+            reference: 'SERVICE-BOTH-ADDR-1762636006',
+            amount: 100.00,
+            currency: 'USD',
+            country: 'US',
+            country_accelerator: 'CN',
+            note: 'Service with both billing and shipping'
+          },
+          payment: {
+            method: 'alipay',
+            client: %w[mobile_browser desktop]
+          },
+          consumer: {
+            reference: 'CUSTOMER-001',
+            first_name: 'Test',
+            last_name: 'User',
+            phone: '13312345678',
+            email: 'test@example.com'
+          },
+          urls: {
+            ipn: 'https://example.com/webhooks/citcon',
+            success: 'https://example.com/payment/success',
+            fail: 'https://example.com/payment/fail',
+            cancel: 'https://example.com/payment/cancel'
+          },
+          goods: {
+            data: [
+              {
+                product_name: 'SaaS Subscription',
+                product_sku: 'SERVICE-001',
+                product_type: 'service',
+                quantity: 1,
+                unit_amount: 100.00,
+                description: 'Monthly subscription service'
+              }
+            ],
+            billing: {
+              first_name: 'Bill',
+              last_name: 'Payer',
+              phone: '2125551234',
+              email: 'billing@company.com',
+              street: '100 Billing Street',
+              city: 'New York',
+              state: 'NY',
+              zip: '10001',
+              country: 'US'
+            },
+            shipping: {
+              first_name: 'Ship',
+              last_name: 'Receiver',
+              phone: '6145675309',
+              email: 'shipping@company.com',
+              street: '200 Shipping Ave',
+              city: 'Columbus',
+              state: 'OH',
+              zip: '43221',
+              country: 'US'
+            }
+            # Both billing and shipping
+          }
+        )
+
+        expect(response['data']).to have_key('id')
+        expect(response['data']['status']).to eq('initiated')
+        expect(response['data']['amount']).to eq(100)
+      end
+    end
+  end
 end

@@ -1,0 +1,78 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.sandbox.citconpay.com/v1/charges
+    body:
+      encoding: UTF-8
+      string: '{"transaction":{"reference":"BILLING-TEST-SERVICE-1762635686","amount":150.0,"currency":"USD","country":"US","country_accelerator":"CN","note":"Testing
+        service with billing, no shipping"},"payment":{"method":"alipay","client":["mobile_browser","desktop"]},"urls":{"ipn":"https://example.com/webhooks/citcon","success":"https://example.com/payment/success","fail":"https://example.com/payment/fail","cancel":"https://example.com/payment/cancel"},"consumer":{"reference":"BILLING-TEST-002","first_name":"Test","last_name":"User","phone":"13312345678","email":"test@example.com"},"goods":{"data":[{"product_name":"Consulting
+        Service","product_sku":"SERVICE-001","product_type":"service","quantity":1,"unit_amount":150.0}],"billing":{"first_name":"Bill","last_name":"To","phone":"6145675310","email":"bill@example.com","street":"456
+        Billing Ave","city":"New York","state":"NY","zip":"10001","country":"US"}}}'
+    headers:
+      Content-Type:
+      - application/json
+      Authorization:
+      - Bearer <ACCESS_TOKEN>
+      User-Agent:
+      - Faraday v2.14.0
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sat, 08 Nov 2025 21:01:26 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Cf-Ray:
+      - 99b8016fbd56d0bb-CDG
+      Cf-Cache-Status:
+      - DYNAMIC
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Etag:
+      - W/"348-muUd1RzEb2oKFOxA94aUwUlapj0"
+      Expires:
+      - '0'
+      Server:
+      - cloudflare
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains; preload
+      Vary:
+      - Origin, accept-encoding
+      Pragma:
+      - no-cache
+      Content-Security-Policy:
+      - default-src 'none';
+      Content-Security-Policy-Report-Only:
+      - default-src amplitude.com *.amplitude.com cash.app *.cash.app cloudflare.com
+        *.cloudflare.com cloudflareinsights.com *.cloudflareinsights.com datatables.net
+        *.datatables.net doubleclick.net *.doubleclick.net google-analytics.com *.google-analytics.com
+        google.com *.google.com googletagmanager.com *.googletagmanager.com jquery.com
+        *.jquery.com paypal.com *.paypal.com sentry.io *.sentry.io tiny.cloud *.tiny.cloud
+        tinymce.com *.tinymce.com citconpay.com *.citconpay.com facebook.net *.facebook.net
+        google.co.uk *.google.co.uk kcp.co.kr *.kcp.co.kr ngrok-free.app *.ngrok-free.app
+        sift.com *.sift.com 'unsafe-inline' 'unsafe-eval' 'self'; report-uri https://csp-reporting.cloudflare.com/cdn-cgi/script_monitor/report?m=HPKAb6A0Ue9rfrsqkRCIpFWQG0bFSgXxrUZAxn8ye7U-1762635686.3604388-1.0.1.1-3VyYL2wTJOpUZ_8lTH2Zeh4mvF.fuedPodlqJw0T6MOU7BKPXj3WFAcasOJ3USnDkLiPZXFxcLEtnbQHMuaqYmtgSlEJErMFeJCeoCwz1ISky.ssjRKwgBcEmK8HZS3p8S2iaat9ddaVHiSVx5LDkdlkXMGU6yU6VEC9Ir5IoJUV84yk0Rnm4fvYvxxfplfr2rhRPnQxZvW3T9uPCdel2A;
+        report-to cf-dnoprmkkbjomjcbo
+      Report-To:
+      - '{"group":"cf-dnoprmkkbjomjcbo","max_age":86400,"endpoints":[{"url":"https://csp-reporting.cloudflare.com/cdn-cgi/script_monitor/report?m=HPKAb6A0Ue9rfrsqkRCIpFWQG0bFSgXxrUZAxn8ye7U-1762635686.3604388-1.0.1.1-3VyYL2wTJOpUZ_8lTH2Zeh4mvF.fuedPodlqJw0T6MOU7BKPXj3WFAcasOJ3USnDkLiPZXFxcLEtnbQHMuaqYmtgSlEJErMFeJCeoCwz1ISky.ssjRKwgBcEmK8HZS3p8S2iaat9ddaVHiSVx5LDkdlkXMGU6yU6VEC9Ir5IoJUV84yk0Rnm4fvYvxxfplfr2rhRPnQxZvW3T9uPCdel2A"}]}'
+      Set-Cookie:
+      - __cf_bm=RLbBrzG8wYQwCkdRAnftcruxCBSeKN48GCU.bTJ0kLo-1762635686.3604388-1.0.1.1-7me5P6W3ozXGrZHl_IvSugiexNSNpDIuSWSId7whou4BSboruWbwiQFDOVHCfJ7HVtWpwQC3X5XFzbgNRsUIVKEVM2YoM6yOsQQHh.Ch5lCYXiN_AtxTPiKVyYq0H2iR;
+        HttpOnly; Secure; Path=/; Domain=citconpay.com; Expires=Sat, 08 Nov 2025 21:31:26
+        GMT
+      - _cfuvid=yr5K2w7nXAeWdKw6EUyN9LCGenPPsJf0sJMqGDfYGlg-1762635686.3604388-1.0.1.1-T4Ss8Wd6b8KPZLUeak6ZX.BrnbyrCM.05AXM2ZtjJb4;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.sandbox.citconpay.com
+    body:
+      encoding: ASCII-8BIT
+      string: '{"status":"success","app":"citcon_upi","version":"v1.0.0","data":{"object":"charge","charge_token":"171caaa0bce611f0967f3b2a428a7e16","id":"2000470696901606694917","reference":"BILLING-TEST-SERVICE-1762635686","amount":150,"currency":"USD","time_created":1762635686,"time_captured":null,"auto_capture":true,"status":"initiated","country":"US","payment":{"method":"alipay","client":[{"client":"desktop","format":"redirect","method":"GET","content":"https://proxy.citconpay.cn/upi/u_landing/v1/landing/172bc5d0bce611f0bef725850d4b9b3a"},{"client":"mobile_browser","format":"redirect","method":"GET","content":"https://proxy.citconpay.cn/upi/u_landing/v1/landing/172bc5d1bce611f0bef725850d4b9b3a"},{"client":"desktop","format":"qr","method":"GET","content":"https://proxy.citconpay.cn/upi/u_landing/v1/qr/172bc5d2bce611f0bef725850d4b9b3a"}]}}}'
+  recorded_at: Sat, 08 Nov 2025 21:01:26 GMT
+recorded_with: VCR 6.3.1
