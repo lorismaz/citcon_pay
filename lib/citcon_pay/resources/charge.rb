@@ -40,6 +40,8 @@ module CitconPay
       # @option urls [String] :fail Failure redirect URL
       # @option urls [String] :cancel Cancellation redirect URL
       # @option urls [String] :mobile Mobile redirect URL
+      # @param ext [Hash, nil] Optional extension payload (e.g. device info:
+      #   { device: { os: "ios" } }) forwarded verbatim under the body's `ext` key
       #
       # @return [Hash] Response containing charge details
       #
@@ -109,7 +111,7 @@ module CitconPay
       #       cancel: "https://example.com/cancel"
       #     }
       #   )
-      def create(transaction:, payment:, urls:, consumer: nil, goods: nil)
+      def create(transaction:, payment:, urls:, consumer: nil, goods: nil, ext: nil)
         body = {
           transaction: transaction,
           payment: payment,
@@ -118,6 +120,7 @@ module CitconPay
 
         body[:consumer] = consumer if consumer
         body[:goods] = goods if goods
+        body[:ext] = ext if ext
 
         post('charges', body: body)
       end
